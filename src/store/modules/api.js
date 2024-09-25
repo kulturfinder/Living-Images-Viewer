@@ -166,7 +166,7 @@ export default {
               baseUrl + 'Computermuseum_Markus_Rechner_480_3bit.mp4',
               854, // 800
               480, // 450
-              0.325
+              0.464
             ),
             new LIMarker(
               'computermuseum-rundgang',

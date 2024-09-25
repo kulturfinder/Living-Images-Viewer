@@ -268,7 +268,7 @@ export default {
           ids = ids.split(',')
         }
       }
-      
+
       return {
         locale: urlParams.get('locale') || 'de',
         ids: ids || []
@@ -305,7 +305,7 @@ export default {
       ? 'api/fetchLivingImagesOldWay'
       : 'api/fetchLivingImages'
     const livingImages = await this.$store.dispatch(actionName, { ids: this.params.ids })
-    
+
     if (!livingImages) {
       // TODO: Handle error, e.g. show error message
       return
