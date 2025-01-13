@@ -114,12 +114,14 @@ export default {
             new LIMarker(
               'mediendom-rundgang',
               'Mediendom-Rundgang',
-              baseUrl + 'mediendom-rundgang_nft.jpg',
-              baseUrl + 'mediendom-rundgang_nft',
+              baseUrl + 'mediendomrundgang800.jpg',
+              baseUrl + 'mediendomrundgang800',
               baseUrl + 'video_mediendom-rundgang.mp4',
               800,
               450,
-              0.084
+              0.335,
+              3,
+              3
             )
           )
 
@@ -129,22 +131,26 @@ export default {
             new LIMarker(
               'bunker-d-buehne',
               'Bunker-D Bühne',
-              baseUrl + 'Marker_Bunker-D_Buehne_400.jpg',
-              baseUrl + 'Marker_Bunker-D_Buehne_400',
-              baseUrl + 'Bunker-D_Buehne_3mbit_480p.mp4',
-              400, // 800
-              225, // 450
-              0.264
+              baseUrl + 'Marker_Bunker-D_Buehne_800.jpg',
+              baseUrl + 'Marker_Bunker-D_Buehne_800',
+              baseUrl + 'Buehne3mbit480p.mp4',
+              852, // 800
+              480, // 450
+              0.320,
+              3,
+              3
             ),
             new LIMarker(
               'bunker-d-rundgang',
               'Bunker-D Rundgang',
               baseUrl + 'Marker_Bunker-D_Rundgang_400.jpg',
-              baseUrl + 'Marker_Bunker-D_Rundgang_800',
-              baseUrl + 'Bunker-D_Rundgang_480p_3bit.mp4',
+              baseUrl + 'MarkerBunkerDRundgang400thresh',
+              baseUrl + 'BunkerDRundgang480p3bit.mp4',
               800,
               450,
-              0.264
+              0.435,
+              3,
+              3
             )
           )
 
@@ -152,8 +158,8 @@ export default {
         } else if (institution.id === 'act001610') {
           institution.livingImages.push(
             new LIMarker(
-              'bunker-d-buehne',
-              'Bunker-D Bühne',
+              'computermuseum-rechner',
+              'Computermuseum Rechner',
               baseUrl + 'Marker_Computermuseum_Markus-Rechner_400.jpg',
               baseUrl + 'MarkerComputermuseumMarkusRechner400thresh', // _800
               baseUrl + 'Computermuseum_Markus_Rechner_480_3bit.mp4',
@@ -162,8 +168,8 @@ export default {
               0.325
             ),
             new LIMarker(
-              'bunker-d-rundgang',
-              'Bunker-D Rundgang',
+              'computermuseum-rundgang',
+              'Computermuseum Rundgang',
               baseUrl + 'Marker_Computermuseum_Rundgang_400.jpg',
               baseUrl + 'MarkerComputermuseumRundgang400thresh', // _800
               baseUrl + 'Computermuseum_Rundgang_480_3bit.mp4',
@@ -181,12 +187,12 @@ export default {
             new LIMarker(
               'weihnachtsgruss2020',
               'Frohe Weihnachten!',
-              baseUrl + 'weihnachtsgruss2020.jpg',
-              baseUrl + 'WeihnachtshausMarker400x227',
+              baseUrl + 'weihnachtsgruss800.jpg',
+              baseUrl + 'weihnachtsgruss800',
               baseUrl + 'Weihnachtshaus_720p_2MBIT.mp4',
               400,
               227,
-              0.345
+              0.330
             )
           )
 
@@ -196,7 +202,7 @@ export default {
             new LIMarker(
               'weihnachtsgruss2021',
               'Frohe Weihnachten! - 2021',
-              baseUrl + 'Weihnachtskarte2021_400.jpg',
+              baseUrl + 'Weihnachtskarte2021_400.jpg', // die Dateien fehlen sowohl im Dropbox als auch auf dem Server
               baseUrl + 'Weihnachtskarte2021_400',
               baseUrl + 'weihnachtskarte2021.mp4',
               854,
@@ -205,20 +211,20 @@ export default {
             )
           )
 
-        /* Focke Museum */
-        } else if (institution.id === 'act0002598') {
-          institution.livingImages.push(
-            new LIMarker(
-              'pagos-erster-wurf',
-              'Pagos erster Wurf',
-              baseUrl + 'pagos-erster-wurf_400.jpg',
-              baseUrl + 'pagos-erster-wurf_400',
-              baseUrl + 'pagos-erster-wurf_3bit_480p.mp4',
-              854,
-              480,
-              0.164
-            )
-          )
+        /* Focke Museum
+          } else if (institution.id === 'act0002598') {
+            institution.livingImages.push(
+              new LIMarker(
+                'pagos-erster-wurf',
+                'Pagos erster Wurf',
+                baseUrl + 'pagos-erster-wurf_400.jpg',
+                baseUrl + 'pagos-erster-wurf_400',
+                baseUrl + 'pagos-erster-wurf_3bit_480p.mp4',
+                854,
+                480,
+                0.164
+              )
+            ) */
           /* Ozeaneum */
         } else if (institution.id === 'act0002741') {
           institution.livingImages.push(
