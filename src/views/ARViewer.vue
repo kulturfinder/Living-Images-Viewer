@@ -248,6 +248,17 @@ export default {
   },
   methods: {
     getAllUrlParams(url) {
+      const queryStringNew = window.location.search
+      console.log('#############', queryStringNew)
+
+      const urlParams = new URLSearchParams(queryStringNew)
+
+      console.log('#############', urlParams.get('livingImageIdList'))
+      console.log('#############', JSON.parse(urlParams.get('livingImageIdList')))
+
+      // TEST: https://localhost:8080/?livingImageIdList=%5B%22abc%22%2C%22def%22%5D
+      // TODO integrate into current method of loading living images
+
       var queryString = url
         ? url.split('?')[1]
         : window.location.search.slice(1)

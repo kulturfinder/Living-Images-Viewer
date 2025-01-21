@@ -15,6 +15,12 @@ const router = new Router({
       props: true
     },
     {
+      path: '/?livingImageIdList=:livingImageIdList',
+      name: 'arViewer',
+      component: ARViewer,
+      props: true
+    },
+    {
       name: '404',
       path: '*',
       redirect: '/de/act0002156'
