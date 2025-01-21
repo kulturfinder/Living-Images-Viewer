@@ -309,7 +309,7 @@ export default {
     // set locale
     this.$i18n.locale = this.params.locale
     // if no id, set default
-    if (!this.params.id) this.params.id = 'act0002741'
+    if (!this.params.id) this.params.id = 'act001610'
   },
   async mounted() {
     // fetch living images
