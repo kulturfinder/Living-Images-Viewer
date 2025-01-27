@@ -313,7 +313,10 @@ export default {
   },
   async mounted() {
     // fetch living images
-    const institution = await this.$store.dispatch('institution/fetchDetails', {
+    const actionName = process.env.VUE_APP_NEW_API === 'true'
+      ? 'api/fetchDataFromNewApi'
+      : 'api/fetchDataFromOldApi'
+    const institution = await this.$store.dispatch(actionName, {
       id: this.params.id,
       locale: this.$i18n.locale
     })

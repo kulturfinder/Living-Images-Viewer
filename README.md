@@ -44,7 +44,7 @@ The following files are required as a minimum:
 - fset3
 ## 4. Add Living Image in the LivingImages project
 The last step is to add the Living Image to the app. To do this, a new LivingImage marker must be created in the
-LivingImages project in [institution.js](https://github.com/kultursphaere-sh/Living-Images-Viewer/blob/main/src/store/modules/institution.js) in the “src/store/modules” directory, a new LivingImage marker must be created.
+LivingImages project in [api.js](https://github.com/kultursphaere-sh/Living-Images-Viewer/blob/main/src/store/modules/api.js) in the “src/store/modules” directory, a new LivingImage marker must be created.
 ```
 class LIMarker {
   constructor(id, title, markerImageUrl, markerSetUrl, videoUrl, width, height, scale = 0.112, offsetX = 0, offsetY = 0, offsetZ = 0) {
