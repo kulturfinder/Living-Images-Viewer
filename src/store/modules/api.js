@@ -34,11 +34,39 @@ export default {
     }
   },
   actions: {
-    async fetchDetails({ commit, getters }, { id, locale }) {
+    async fetchDataFromNewApi({ commit, getters }, { id, locale }) {
       try {
-        const response = await Vue.http.get(`https://kultursphaere.sh/corsproxy.php?url=http://xtree-actor-api.digicult-verbund.de/getRepositoryItem?id=${id}&lang=${locale}`)
-        const data = await response.json()
+        const apiUrl = 'https://kulturfindertest.dsecurecloud.de/api'
+        const response = await Vue.http.get(`${apiUrl}/Institute/GetInstitute/${id}/AllDetails?language=${locale}`)
+        const institution = await response.json()
 
+        institution.livingImages = []
+        for (const m of institution.media) {
+          if (m.mediaType === 'LivingImage') {
+            // TODO: Remove http replace when api response set to https
+            const livingImageUrl = m.filename.replace('http:', 'https:')
+            const response = await Vue.http.get(livingImageUrl)
+            let livingImage = await response.json()
+            livingImage.setUrl = livingImage.imageUrl
+            institution.livingImages.push(livingImage)
+          }
+        }
+
+        commit('save', institution)
+        console.log('Daten geladen aus neuer API:', institution)
+
+        return getters.getData
+      } catch (error) {
+        console.error('Error while fetching details from new API:', error)
+        return false
+      }
+    },
+    async fetchDataFromOldApi({ commit, getters }, { id, locale }) {
+      try {
+        const corsProxy = 'https://kultursphaere.sh/corsproxy.php?url='
+        const response = await Vue.http.get(`${corsProxy}http://xtree-actor-api.digicult-verbund.de/getRepositoryItem?id=${id}&lang=${locale}`)
+        const data = await response.json()
+        
         let institution = {
           id: data.Actor.id,
           name: undefined,
@@ -270,11 +298,11 @@ export default {
           )
         }
         commit('save', institution)
-        console.log('Daten geladen', institution)
+        console.log('Festgeschriebene Daten geladen: ', institution)
 
         return getters.getData
       } catch (error) {
-        console.error('Error while fetching details:', error)
+        console.error('Error while fetching details from old API:', error)
         return false
       }
     }

@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import institution from './modules/institution'
+import api from './modules/api'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   modules: {
-    institution
+    api
   }
 })
 
