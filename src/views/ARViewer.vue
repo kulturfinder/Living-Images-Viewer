@@ -227,7 +227,8 @@ export default {
       muted: false,
       error: '',
       showMessage: false,
-      camRejected: false
+      camRejected: false,
+      oldWayUsed: false
     }
   },
   computed: {
@@ -247,47 +248,31 @@ export default {
     }
   },
   methods: {
-    getAllUrlParams(url) {
-      var queryString = url
-        ? url.split('?')[1]
-        : window.location.search.slice(1)
-      var obj = {}
+    getUrlParams(url) {
+      // you can use ids=[url1,url2,...] or ids=url1,url2,...
+      const urlParams = new URLSearchParams(url)
+      let ids = urlParams.get('ids')
 
-      if (queryString) {
-        queryString = queryString.split('#')[0]
-        var arr = queryString.split('&')
+      // fallback for old way using only id
+      const id = urlParams.get('id')
 
-        for (var i = 0; i < arr.length; i++) {
-          var a = arr[i].split('=')
-          var paramName = a[0]
-          var paramValue = typeof (a[1]) === 'undefined' ? true : a[1]
-          paramName = paramName.toLowerCase()
-          if (typeof paramValue === 'string') paramValue = paramValue.toLowerCase()
-          if (paramName.match(/\[(\d+)?\]$/)) {
-            var key = paramName.replace(/\[(\d+)?\]/, '')
-
-            if (!obj[key]) obj[key] = []
-
-            if (paramName.match(/\[\d+\]$/)) {
-              var index = /\[(\d+)\]/.exec(paramName)[1]
-              obj[key][index] = paramValue
-            } else {
-              obj[key].push(paramValue)
-            }
-          } else {
-            if (!obj[paramName]) {
-              obj[paramName] = paramValue
-            } else if (obj[paramName] && typeof obj[paramName] === 'string') {
-              obj[paramName] = [obj[paramName]]
-              obj[paramName].push(paramValue)
-            } else {
-              obj[paramName].push(paramValue)
-            }
+      if (id) {
+        ids = [id]
+      } else if (ids) {
+        try {
+          if (ids.startsWith('[') && ids.endsWith(']')) {
+            ids = ids.slice(1, -1)
           }
+          ids = JSON.parse(`[${ids}]`)
+        } catch (e) {
+          ids = ids.split(',')
         }
       }
-
-      return obj
+      
+      return {
+        locale: urlParams.get('locale') || 'de',
+        ids: ids || []
+      }
     },
     onBackBtn() {
       window.parent.postMessage('back-button-clicked', '*')
@@ -305,22 +290,28 @@ export default {
     }
   },
   created() {
-    this.params = this.getAllUrlParams(window.location.href)
+    // get ids and locale
+    this.params = this.getUrlParams(window.location.search)
+    // if no id, set fallback
+    if (this.params.ids.length === 0) this.params.ids = ['act001610']
     // set locale
     this.$i18n.locale = this.params.locale
-    // if no id, set default
-    if (!this.params.id) this.params.id = 'act001610'
   },
   async mounted() {
+    if (this.params.ids[0].startsWith('act')) this.oldWayUsed = true
+
     // fetch living images
-    const actionName = process.env.VUE_APP_NEW_API === 'true'
-      ? 'api/fetchDataFromNewApi'
-      : 'api/fetchDataFromOldApi'
-    const institution = await this.$store.dispatch(actionName, {
-      id: this.params.id,
-      locale: this.$i18n.locale
-    })
-    this.livingImages = institution.livingImages.map(livingImage => {
+    const actionName = this.oldWayUsed
+      ? 'api/fetchLivingImagesOldWay'
+      : 'api/fetchLivingImages'
+    const livingImages = await this.$store.dispatch(actionName, { ids: this.params.ids })
+    
+    if (!livingImages) {
+      // TODO: Handle error, e.g. show error message
+      return
+    }
+
+    this.livingImages = livingImages.map(livingImage => {
       return {
         ...livingImage,
         video: null,
@@ -387,7 +378,8 @@ export default {
                 },
                 function () {
                   /* statsWorker.update() */
-                }
+                },
+                this.oldWayUsed
               )
             })
           })

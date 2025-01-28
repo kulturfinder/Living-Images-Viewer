@@ -43,10 +43,10 @@ const publicPath = process.env.NODE_ENV && process.env.NODE_ENV === 'development
     ? '/'
     : '/living-images/';
 let worker;
-function start(markers, video, input_width, input_height, canvas_draw, render_update, track_update) {
-  const workerPath = process.env.VUE_APP_NEW_API === 'true'
-    ? 'wasm_worker/artoolkit.wasm_worker_new-api.js'
-    : 'wasm_worker/artoolkit.wasm_worker.js';
+function start(markers, video, input_width, input_height, canvas_draw, render_update, track_update, oldWayUsed) {
+  const workerPath = oldWayUsed
+    ? 'wasm_worker/artoolkit.wasm_worker.js'
+    : 'wasm_worker/artoolkit.wasm_worker_new-api.js';
   worker = new Worker(publicPath + workerPath);
   worker.onmessage = function() {
     start2(markers, video, input_width, input_height, canvas_draw, render_update, track_update);
