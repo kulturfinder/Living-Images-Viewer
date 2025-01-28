@@ -23,76 +23,49 @@ class LIMarker {
 export default {
   namespaced: true,
   state: {
-    institution: {}
+    livingImages: []
   },
   getters: {
-    getData: (state) => state.institution
+    getLivingImages: (state) => state.livingImages
   },
   mutations: {
-    save: (state, data) => {
-      state.institution = data
+    setLivingImages: (state, livingImages) => {
+      state.livingImages = livingImages
     }
   },
   actions: {
-    async fetchDataFromNewApi({ commit, getters }, { id, locale }) {
+    async fetchLivingImages({ commit, getters }, { ids }) {
       try {
-        const apiUrl = 'https://kulturfindertest.dsecurecloud.de/api'
-        const response = await Vue.http.get(`${apiUrl}/Institute/GetInstitute/${id}/AllDetails?language=${locale}`)
-        const institution = await response.json()
-
-        institution.livingImages = []
-        for (const m of institution.media) {
-          if (m.mediaType === 'LivingImage') {
-            // TODO: Remove http replace when api response set to https
-            const livingImageUrl = m.filename.replace('http:', 'https:')
-            const response = await Vue.http.get(livingImageUrl)
-            let livingImage = await response.json()
-            livingImage.setUrl = livingImage.imageUrl
-            institution.livingImages.push(livingImage)
-          }
+        let livingImages = []
+        console.log('IDs', ids)
+        for (const url of ids) {
+          const response = await Vue.http.get(url)
+          let livingImage = await response.json()
+          livingImage.setUrl = livingImage.imageUrl
+          livingImages.push(livingImage)
         }
 
-        commit('save', institution)
-        console.log('Daten geladen aus neuer API:', institution)
+        commit('setLivingImages', livingImages)
+        console.log('Living Images geladen aus neuer API:', livingImages)
 
-        return getters.getData
+        return getters.getLivingImages
       } catch (error) {
         console.error('Error while fetching details from new API:', error)
         return false
       }
     },
-    async fetchDataFromOldApi({ commit, getters }, { id, locale }) {
+    async fetchLivingImagesOldWay({ commit, getters }, { ids }) {
       try {
-        const corsProxy = 'https://kultursphaere.sh/corsproxy.php?url='
-        const response = await Vue.http.get(`${corsProxy}http://xtree-actor-api.digicult-verbund.de/getRepositoryItem?id=${id}&lang=${locale}`)
-        const data = await response.json()
-        
-        let institution = {
-          id: data.Actor.id,
-          name: undefined,
-          livingImages: []
-        }
-
-        // set preferred name as value for name property (identifier: name.role = preferred)
-        institution.name = data.Actor.name.find(item => item.role === 'preferred')
-        if (institution.name.nameAddition) {
-          institution.name = institution.name.nameAddition
-        } else if (institution.name.label) {
-          institution.name = institution.name.label
-        } else {
-          institution.name = 'Unbekannter Name'
-        }
-
-        /* TEST FOR LIVING IMAGES  */
-        institution.livingImages = []
+        const id = ids[0]
+        let livingImages = []
         const baseUrl = 'https://kultursphaere.sh/living-images/assets/'
 
         /* Test the Living-Image with 'https://localhost:8080?locale=de&id=(actid)'
-            on phone with 'https://192.168.0.153:8080/de/?locale=de&id=(actid)' */
+            on phone with 'https://[IP address]:8080?locale=de&id=(actid)' */
 
         /* Schauspielhaus */
-        if (institution.id === 'act0002156') {
-          institution.livingImages.push(
+        if (id === 'act0002156') {
+          livingImages.push(
             new LIMarker(
               'die-raeuber',
               'Die Räuber',
@@ -137,8 +110,8 @@ export default {
         } */
 
         /* Mediendom */
-        } else if (institution.id === 'act001621') {
-          institution.livingImages.push(
+        } else if (id === 'act001621') {
+          livingImages.push(
             new LIMarker(
               'mediendom-rundgang',
               'Mediendom-Rundgang',
@@ -154,8 +127,8 @@ export default {
           )
 
         /* Bunker-D */
-        } else if (institution.id === 'act0002152') {
-          institution.livingImages.push(
+        } else if (id === 'act0002152') {
+          livingImages.push(
             new LIMarker(
               'bunker-d-buehne',
               'Bunker-D Bühne',
@@ -183,8 +156,8 @@ export default {
           )
 
         /* Computermuseum */
-        } else if (institution.id === 'act001610') {
-          institution.livingImages.push(
+        } else if (id === 'act001610') {
+          livingImages.push(
             new LIMarker(
               'computermuseum-rechner',
               'Computermuseum Rechner',
@@ -210,8 +183,8 @@ export default {
           )
 
         /* Weihnachtshaus */
-        } else if (institution.id === 'act001696') {
-          institution.livingImages.push(
+        } else if (id === 'act001696') {
+          livingImages.push(
             new LIMarker(
               'weihnachtsgruss2020',
               'Frohe Weihnachten!',
@@ -225,8 +198,8 @@ export default {
           )
 
         /* Weihnachtskarte 2021 - Storm Museum */
-        } else if (institution.id === 'act001651') {
-          institution.livingImages.push(
+        } else if (id === 'act001651') {
+          livingImages.push(
             new LIMarker(
               'weihnachtsgruss2021',
               'Frohe Weihnachten! - 2021',
@@ -254,8 +227,8 @@ export default {
               )
             ) */
           /* Ozeaneum */
-        } else if (institution.id === 'act0002741') {
-          institution.livingImages.push(
+        } else if (id === 'act0002741') {
+          livingImages.push(
             new LIMarker(
               'ozeaneum-marker',
               'Ozeaneum Marker',
@@ -269,8 +242,8 @@ export default {
               1
             )
           )
-        } else if (institution.id === 'act0002644') { /* Staldgarden Museum Kolding */
-          institution.livingImages.push(
+        } else if (id === 'act0002644') { /* Staldgarden Museum Kolding */
+          livingImages.push(
             new LIMarker(
               'jenny',
               'Jenny ENG',
@@ -297,10 +270,10 @@ export default {
             )
           )
         }
-        commit('save', institution)
-        console.log('Festgeschriebene Daten geladen: ', institution)
+        commit('setLivingImages', livingImages)
+        console.log('Alte Living Images geladen: ', livingImages)
 
-        return getters.getData
+        return getters.getLivingImages
       } catch (error) {
         console.error('Error while fetching details from old API:', error)
         return false
