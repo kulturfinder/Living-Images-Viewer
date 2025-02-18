@@ -87,7 +87,7 @@
         crossOrigin="anonymous"
         style="opacity:0"
       >
-        <source :src="livingImage.videoUrl" type="video/mp4">
+        <source :src="livingImage.getVideoUrl(currentLocale)" type="video/mp4">
       </video>
     </div>
 
@@ -232,6 +232,10 @@ export default {
     }
   },
   computed: {
+    currentLocale() {
+      // Use Vue I18n locale if available, otherwise fall back to the browser's language.
+      return this.$i18n && this.$i18n.locale ? this.$i18n.locale : navigator.language.slice(0, 2)
+    },
     unfoundLivingImages() {
       return this.livingImages.filter(li => !li.found).length
     },
@@ -301,6 +305,25 @@ export default {
     if (this.params.ids[0].startsWith('act')) this.oldWayUsed = true
 
     // fetch living images
+    const institution = await this.$store.dispatch('institution/fetchDetails', {
+      id: this.params.id,
+      locale: this.$i18n.locale
+    })
+    // Assign the original instances to preserve their prototype methods
+    this.livingImages = institution.livingImages
+    // Add extra properties directly
+    this.livingImages.forEach(livingImage => {
+      livingImage.video = null
+      livingImage.active = false
+      livingImage.found = false
+      livingImage.playing = false
+      livingImage.userPaused = false
+      livingImage.fadingOut = false
+      livingImage.ended = false
+    })
+
+    /* async mounted() {
+    // fetch living images
     const actionName = this.oldWayUsed
       ? 'api/fetchLivingImagesOldWay'
       : 'api/fetchLivingImages'
@@ -322,7 +345,7 @@ export default {
         fadingOut: false,
         ended: false
       }
-    })
+    }) */
 
     document.getElementById('accept-button').addEventListener('click', () => {
       for (let livingImage of this.livingImages) {
