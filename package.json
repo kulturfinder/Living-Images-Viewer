@@ -16,7 +16,7 @@
     "bootstrap": "^4.6.1",
     "bootstrap-vue": "^2.23.1",
     "focus-visible": "^5.2.0",
-    "sass": "^1.26.2",
+    "sass": "^1.79.4",
     "stats.js": "^0.17.0",
     "three": "^0.126.1",
     "typeface-roboto": "0.0.75",
