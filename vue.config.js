@@ -30,6 +30,7 @@ module.exports = {
       cert: fs.readFileSync('./certs/localhost.pem')
     },
     port: 8080,
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+    headers: { 'Access-Control-Allow-Origin': 'https://kulturfindertest.dsecurecloud.de' }
   }
 }
