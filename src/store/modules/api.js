@@ -14,7 +14,6 @@ class LIMarker {
     } else {
       this.videoUrls = video
     }
-    // this.videoUrls = videoUrls // now an object with language-specific URLs
     // this.videoUrl = videoUrl
     this.width = width // video width
     this.height = height // video height
