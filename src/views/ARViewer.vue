@@ -272,9 +272,8 @@ export default {
           ids = ids.split(',')
         }
       }
-
       return {
-        locale: urlParams.get('locale') || 'de',
+        locale: urlParams.get('locale') || navigator.language.slice(0, 2),
         ids: ids || []
       }
     },
@@ -297,20 +296,24 @@ export default {
     // get ids and locale
     this.params = this.getUrlParams(window.location.search)
     // if no id, set fallback
-    if (this.params.ids.length === 0) this.params.ids = ['act001610']
+    if (this.params.ids.length === 0) this.params.ids = ['act0002644']
     // set locale
     this.$i18n.locale = this.params.locale
   },
   async mounted() {
     if (this.params.ids[0].startsWith('act')) this.oldWayUsed = true
+    const actionName = this.oldWayUsed
+      ? 'api/fetchLivingImagesOldWay'
+      : 'api/fetchLivingImages'
+    console.log(this.params.ids)
 
     // fetch living images
-    const institution = await this.$store.dispatch('institution/fetchDetails', {
-      id: this.params.id,
+    const livingImages = await this.$store.dispatch(actionName, {
+      ids: this.params.ids,
       locale: this.$i18n.locale
     })
     // Assign the original instances to preserve their prototype methods
-    this.livingImages = institution.livingImages
+    this.livingImages = livingImages
     // Add extra properties directly
     this.livingImages.forEach(livingImage => {
       livingImage.video = null

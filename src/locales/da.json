@@ -1,48 +1,48 @@
 {
   "welcomeScreen": {
-    "title": "LIVING IMAGES",
-    "description": "You can bring real images to life with the kulturfinder.sh. How does it work?",
-    "step1": "1. Allow access to your camera",
-    "step2": "2. Point your camera at the Living Image",
-    "step3": "3. See what happens with it",
-    "button": "Let's go!"
+    "title": "LEVENDE BILLEDER",
+    "description": "Du kan vække rigtige billeder til live med kulturfinder.sh. Hvordan fungerer det?",
+    "step1": "1. Giv adgang til dit kamera",
+    "step2": "2. Peg dit kamera mod det levende billede",
+    "step3": "3. Se hvad der sker",
+    "button": "Lad os gå!"
   },
   "loading": {
-    "spinnerLabel": "Loading",
-    "text": "Loading Living Images ..."
+    "spinnerLabel": "Indlæser",
+    "text": "Indlæser levende billeder..."
   },
   "camRejected": {
-    "text": "We need the permission to use your device's camera. The app doesn't work without it.",
-    "restartButton": "Got it"
+    "text": "Vi har brug for tilladelse til at bruge dit kamera. App'en virker ikke uden det.",
+    "restartButton": "Forstået"
   },
-  "videoElementNotSupported": "Your browser doesn't support the video element.",
+  "videoElementNotSupported": "Din browser understøtter ikke video-elementet.",
   "stats": {
-    "main": "Main",
-    "worker": "Worker"
+    "main": "Hoved",
+    "worker": "Arbejder"
   },
   "buttons": {
-    "back": "Back",
+    "back": "Tilbage",
     "info": "Information",
-    "overview": "Overview",
+    "overview": "Oversigt",
     "pause": "Pause",
-    "play": "Play",
-    "muted": "Turn sound on",
-    "unmuted": "Turn sound off"
+    "play": "Afspil",
+    "muted": "Slå lyd til",
+    "unmuted": "Slå lyd fra"
   },
   "infoModal": {
-    "title": "About Living Images",
-    "p1": "kulturfinder.sh lets you bring real images to life!",
-    "p2": "How does it work? It's simple: When you see a Living Image in a participating cultural institution, open the Living Image Viewer on the institution's page or scan the corresponding QR code. Now point your device at the image and let its story surprise you! Don't forget to turn on the sound.",
-    "imageAlt": "Example of a marker",
-    "imageCaption": "Example: Yvonne Ruprecht from the {link}.",
+    "title": "Om Levende Billeder",
+    "p1": "kulturfinder.sh lader dig vække rigtige billeder til live!",
+    "p2": "Hvordan fungerer det? Det er enkelt: Når du ser et levende billede i en deltagende kulturinstitution, så åbn Living Image Viewer på institutionens side eller scan den tilsvarende QR-kode. Peg din enhed mod billedet, og lad dets historie overraske dig! Husk at tænde for lyden.",
+    "imageAlt": "Eksempel på en markør",
+    "imageCaption": "Eksempel: Yvonne Ruprecht fra {link}.",
     "imageCaptionLinkValue": "Schauspielhaus Kiel",
-    "reportErrors": "Have you found an error? Since we are in the midst of testing, errors are likely to occur. Please notify us by email at: {link}.",
+    "reportErrors": "Har du fundet en fejl? Da vi stadig tester, kan fejl forekomme. Kontakt os venligst via e-mail: {link}.",
     "reportErrorsLinkValue": "dev@kultursphaere.sh",
     "version": "version"
   },
   "overviewModal": {
-    "title": "Living Images",
-    "imagesFound": "No images found yet | One image found | {count} images found",
-    "found": "watched"
+    "title": "Levende Billeder",
+    "imagesFound": "Ingen billeder fundet endnu | Ét billede fundet | {count} billeder fundet",
+    "found": "set"
   }
 }
