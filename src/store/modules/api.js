@@ -3,12 +3,18 @@ import Vue from 'vue'
 // Living Image Marker Object for testing purposes
 // should be put in a database in the future
 class LIMarker {
-  constructor(id, title, markerImageUrl, markerSetUrl, videoUrl, width, height, scale = 0.112, offsetX = 0, offsetY = 0, offsetZ = 0) {
+  constructor(id, title, markerImageUrl, markerSetUrl, video, width, height, scale = 0.112, offsetX = 0, offsetY = 0, offsetZ = 0) {
     this.id = id // used for identification, must be unique
     this.title = title // seen in overview
     this.imageUrl = markerImageUrl
     this.setUrl = markerSetUrl // feature set name without extensions
-    this.videoUrl = videoUrl
+    // If a string is passed, wrap it in an object under 'de'
+    if (typeof video === 'string') {
+      this.videoUrls = { de: video }
+    } else {
+      this.videoUrls = video
+    }
+    // this.videoUrl = videoUrl
     this.width = width // video width
     this.height = height // video height
     this.scale = scale // need to adjust this to make the video fit the marker image
@@ -17,6 +23,19 @@ class LIMarker {
       y: offsetY,
       z: offsetZ
     }
+  }
+
+  // Returns the video URL based on the current Vue I18n locale.
+  getVideoUrl(currentLocale) {
+    // If only a German video exists, return that
+    if (this.videoUrls.de && Object.keys(this.videoUrls).length === 1) {
+      return this.videoUrls.de
+    }
+    // Use the first two characters of the locale (e.g. "en", "de", "da")
+    const lang = currentLocale ? currentLocale.slice(0, 2) : 'en'
+    console.log('Current locale:', currentLocale, 'Using lang:', lang)
+    // Fallback to English if the language is not available
+    return this.videoUrls[lang] || this.videoUrls.en
   }
 }
 
@@ -247,21 +266,29 @@ export default {
             new LIMarker(
               'jenny',
               'Jenny ENG',
-              baseUrl + 'jenny.jpeg', // LivingImagesJennyENGCoverphoto400.jpg
-              baseUrl + 'jenny', // LivingImagesJennyENGCoverphoto400_thresh
-              baseUrl + 'jenny.mov',
-              1080, // 1920
-              1080, // 1080 // 0.454
-              0.180,
+              baseUrl + 'jenny-marker.jpg', // marker image
+              baseUrl + 'jenny-marker', // marker set
+              {
+                en: baseUrl + 'jenny_eng.mp4',
+                de: baseUrl + 'jenny_de.mp4',
+                da: baseUrl + 'jenny_da.mp4'
+              },
+              1080,
+              1080,
+              0.122,
               8,
               8
             ),
             new LIMarker(
               'walther',
               'Walther ENG',
-              baseUrl + 'walther.jpeg', // LivingImagesWaltherENGCoverphoto2_400
-              baseUrl + 'walther', // LivingImagesWaltherENGCoverphoto2_400thresh
-              baseUrl + 'walther.mov', // LivingImagesWaltherENG.mp4
+              baseUrl + 'walther-marker.jpg', // LivingImagesWaltherENGCoverphoto2_400
+              baseUrl + 'walther-marker', // LivingImagesWaltherENGCoverphoto2_400thresh
+              {
+                en: baseUrl + 'walther_eng.mp4',
+                de: baseUrl + 'walther_de.mp4',
+                da: baseUrl + 'walther_da.mp4'
+              },
               1080,
               1080,
               0.122,

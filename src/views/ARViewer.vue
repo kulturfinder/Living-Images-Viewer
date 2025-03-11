@@ -87,7 +87,7 @@
         crossOrigin="anonymous"
         style="opacity:0"
       >
-        <source :src="livingImage.videoUrl" type="video/mp4">
+        <source :src="livingImage.getVideoUrl(currentLocale)" type="video/mp4">
       </video>
     </div>
 
@@ -232,6 +232,10 @@ export default {
     }
   },
   computed: {
+    currentLocale() {
+      // Use Vue I18n locale if available, otherwise fall back to the browser's language.
+      return this.$i18n && this.$i18n.locale ? this.$i18n.locale : navigator.language.slice(0, 2)
+    },
     unfoundLivingImages() {
       return this.livingImages.filter(li => !li.found).length
     },
@@ -268,9 +272,8 @@ export default {
           ids = ids.split(',')
         }
       }
-      
       return {
-        locale: urlParams.get('locale') || 'de',
+        locale: urlParams.get('locale') || navigator.language.slice(0, 2),
         ids: ids || []
       }
     },
@@ -293,19 +296,42 @@ export default {
     // get ids and locale
     this.params = this.getUrlParams(window.location.search)
     // if no id, set fallback
-    if (this.params.ids.length === 0) this.params.ids = ['act001610']
+    if (this.params.ids.length === 0) this.params.ids = ['act0002644']
     // set locale
     this.$i18n.locale = this.params.locale
   },
   async mounted() {
     if (this.params.ids[0].startsWith('act')) this.oldWayUsed = true
+    const actionName = this.oldWayUsed
+      ? 'api/fetchLivingImagesOldWay'
+      : 'api/fetchLivingImages'
+    console.log(this.params.ids)
 
+    // fetch living images
+    const livingImages = await this.$store.dispatch(actionName, {
+      ids: this.params.ids,
+      locale: this.$i18n.locale
+    })
+    // Assign the original instances to preserve their prototype methods
+    this.livingImages = livingImages
+    // Add extra properties directly
+    this.livingImages.forEach(livingImage => {
+      livingImage.video = null
+      livingImage.active = false
+      livingImage.found = false
+      livingImage.playing = false
+      livingImage.userPaused = false
+      livingImage.fadingOut = false
+      livingImage.ended = false
+    })
+
+    /* async mounted() {
     // fetch living images
     const actionName = this.oldWayUsed
       ? 'api/fetchLivingImagesOldWay'
       : 'api/fetchLivingImages'
     const livingImages = await this.$store.dispatch(actionName, { ids: this.params.ids })
-    
+
     if (!livingImages) {
       // TODO: Handle error, e.g. show error message
       return
@@ -322,7 +348,7 @@ export default {
         fadingOut: false,
         ended: false
       }
-    })
+    }) */
 
     document.getElementById('accept-button').addEventListener('click', () => {
       for (let livingImage of this.livingImages) {
