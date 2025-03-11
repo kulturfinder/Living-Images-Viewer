@@ -305,7 +305,6 @@ export default {
     const actionName = this.oldWayUsed
       ? 'api/fetchLivingImagesOldWay'
       : 'api/fetchLivingImages'
-    console.log(this.params.ids)
 
     // fetch living images
     const livingImages = await this.$store.dispatch(actionName, {
@@ -324,31 +323,6 @@ export default {
       livingImage.fadingOut = false
       livingImage.ended = false
     })
-
-    /* async mounted() {
-    // fetch living images
-    const actionName = this.oldWayUsed
-      ? 'api/fetchLivingImagesOldWay'
-      : 'api/fetchLivingImages'
-    const livingImages = await this.$store.dispatch(actionName, { ids: this.params.ids })
-
-    if (!livingImages) {
-      // TODO: Handle error, e.g. show error message
-      return
-    }
-
-    this.livingImages = livingImages.map(livingImage => {
-      return {
-        ...livingImage,
-        video: null,
-        active: false,
-        found: false,
-        playing: false,
-        userPaused: false,
-        fadingOut: false,
-        ended: false
-      }
-    }) */
 
     document.getElementById('accept-button').addEventListener('click', () => {
       for (let livingImage of this.livingImages) {
