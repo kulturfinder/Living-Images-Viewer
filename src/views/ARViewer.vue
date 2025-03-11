@@ -301,10 +301,10 @@ export default {
     this.$i18n.locale = this.params.locale
   },
   async mounted() {
-    if (this.params.ids[0].startsWith('act')) this.oldWayUsed = true    
+    if (this.params.ids[0].startsWith('act')) this.oldWayUsed = true
     const actionName = this.oldWayUsed
       ? 'api/fetchLivingImagesOldWay'
-      : 'api/fetchLivingImages
+      : 'api/fetchLivingImages'
 
     // fetch living images
     const livingImages = await this.$store.dispatch(actionName, {
@@ -323,7 +323,7 @@ export default {
       livingImage.fadingOut = false
       livingImage.ended = false
     })
-    
+
     document.getElementById('accept-button').addEventListener('click', () => {
       for (let livingImage of this.livingImages) {
         // assign element to living image object
